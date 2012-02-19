@@ -1,5 +1,5 @@
 Simple tcp-socket server, that can broadcast incoming messages to connected sockets.
 
-----------------------
+---------------------------------------------------------------------------------------------
 
 It was found here: https://www6.software.ibm.com/developerworks/education/l-rubysocks/l-rubysocks-a4.pdf. 
