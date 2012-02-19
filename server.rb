@@ -2,10 +2,10 @@ require "socket"
 include Socket::Constants
 
 class ChatServer
-  def initialize(port)
+  def initialize(host, port)
     # All sockets on the server
     @descriptors = Array::new
-    @server_socket = TCPServer.new("", port)
+    @server_socket = TCPServer.new(host, port)
     @server_socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, 1)
     printf("Chatserver started on port %d\n", port)
     @descriptors.push(@server_socket)

@@ -1,3 +1,8 @@
 require "./server.rb"
 
-ChatServer.new( 2626 ).run
+host = ""
+host = ARGV[0] unless ARGV[0].nil?
+port = 3001
+port = ARGV[1] unless ARGV[1].nil?
+
+ChatServer.new(host, port).run

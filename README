@@ -1,5 +1,16 @@
 Simple tcp-socket server, that can broadcast incoming messages to connected sockets.
 
+Start server with:
+
+# Default host is 'localhost'
+# Default port is 3001
+
+$ ruby chat_runner <host> <port>
+
+In new console:
+
+$ telnet <host> <port>
+
 ----------------------
 
 It was found here: https://www6.software.ibm.com/developerworks/education/l-rubysocks/l-rubysocks-a4.pdf. 
