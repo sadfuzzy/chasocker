@@ -81,10 +81,13 @@ class ChatServer
   def accept_new_connection
 
     new_socket = @server_socket.accept
+    client_host = new_socket.peeraddr[2]
+    client_id = new_socket.peeraddr[1]
+
     @descriptors.push(new_socket)
+
     new_socket.write("You're connected to the Ruby chatserver\n")
-    str = sprintf("Client joined %s:%s\n",
-                  new_socket.peeraddr[2], new_socket.peeraddr[1])
+    str = sprintf("Client joined %s:%s\n", client_host, client_id)
 
     broadcast_string(str, new_socket)
 
