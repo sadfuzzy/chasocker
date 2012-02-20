@@ -1,4 +1,4 @@
-require "./server.rb"
+require File.expand_path("server.rb", "lib")
 
 host = ""
 host = ARGV[0] unless ARGV[0].nil?

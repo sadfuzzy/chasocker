@@ -59,7 +59,6 @@ class ChatServer
 
     @descriptors.each do |client_socket|
       if client_socket != @server_socket && client_socket != omit_sock
-        #puts client_socket.class
         client_socket.write(str)
       end
     end
