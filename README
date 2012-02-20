@@ -11,6 +11,8 @@ In new console:
 
 $ telnet <host> <port>
 
+To quit telnet, press Shift+Ctrl+] and type 'quit'.
+
 --------------------------------------------------------------------------------
 
 It was found here:
