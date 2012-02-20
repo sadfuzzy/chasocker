@@ -40,9 +40,20 @@ class ChatServer
 
             else
 
-              str = sprintf("[%s|%s]: %s",
-                            sock.peeraddr[2], sock.peeraddr[1], sock.gets())
-              broadcast_string(str, sock)
+              client_host = sock.peeraddr[2]
+              client_id = sock.peeraddr[1]
+              message = sock.gets()
+
+              if message.length <= 2
+
+                sock.write("Sorry, you cannot send blank messages!\n")
+
+              else
+
+                str = sprintf("[%s|%s]: %s", client_host, client_id, message)
+                broadcast_string(str, sock)
+
+              end
 
             end
           end
