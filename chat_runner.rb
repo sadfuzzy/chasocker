@@ -1,8 +1,8 @@
 require File.expand_path("chat_server.rb", "lib")
 
-host = ""
-host = ARGV[0] unless ARGV[0].nil?
-port = 3001
-port = ARGV[1] unless ARGV[1].nil?
+if ARGV.include?("-h") || ARGV.size < 1
+  $stderr.puts "Usage: #{$0} host:port\n\tDefault settings: localhost:46969"
+  exit 1
+end
 
-ChatServer.new(host, port).run
+ChatServer.new('localhost', 46969).run
