@@ -1,5 +1,5 @@
 require "socket"
-require "json"    #gives access to 'to_json' method
+require "json"
 include Socket::Constants
 
 class ChatServer
@@ -9,90 +9,77 @@ class ChatServer
     @server_socket = TCPServer.new(host, port)
     @server_socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, 1)
     printf("Chatserver started on port %d\n", port)
-    puts "#{@server_socket.addr.join('|')}"
     @descriptors.push(@server_socket)
-    @descriptors.uniq!
-    puts @descriptors.join(" ; ")
-  end # initialize
+  end
 
   def run
 
-    loop {
+    loop do
 
-      tmp = select(@descriptors, nil, nil, nil)
+      res = select(@descriptors, nil, nil, nil)
 
-      unless tmp == nil
-        descriptors = tmp[0]
+      unless res == nil
 
         # Iterate through the tagged read descriptors
-        descriptors.each do |socket|
+        for sock in res[0]
 
           # Received a connect to the server (listening) socket
-          if socket == @server_socket
+          if sock == @server_socket
 
-            puts "Accepting new connection!\n"
             accept_new_connection
 
           else
 
-            puts "Socket: #{socket}\n"
-
             # Received something on a client socket
-            if socket.respond_to?('eof') && socket.readlines()
+            if sock.eof?
 
-              socket.close
-              @descriptors.delete(socket)
+              sprintf("Client left %s:%s\n",
+                      sock.peeraddr[2], sock.peeraddr[1])
+              sock.close
+              @descriptors.delete(sock)
 
             else
 
-              client_host = socket.peeraddr[2]
-              client_id = socket.peeraddr[1]
-              message = socket.gets()
+              client_host = sock.peeraddr[2]
+              client_id = sock.peeraddr[1]
+              message = sock.gets()
 
-              puts "[#{[client_host, client_id].join('|')}: #{message}"
-              broadcast_string(message, socket)
+              sprintf("[%s|%s]: %s", client_host, client_id, message)
+              broadcast_string(message, sock)
 
             end
           end
         end
       end
 
-    }
+    end
 
-  end #run
+  end
 
   private
 
-  def broadcast_string(str)
+  def broadcast_string(str, omit_sock)
 
     @descriptors.each do |client_socket|
-      client_socket.puts(str)
+      if client_socket != @server_socket && client_socket != omit_sock
+        client_socket.write(str)
+      end
     end
 
     print(str)
 
-  end # broadcast_string
+  end
 
   def accept_new_connection
 
     new_socket = @server_socket.accept
-
-    # sock.peeraddr(:hostname) #=> ["AF_INET", 80, "carbon.ruby-lang.org", "221.186.184.68"]
-    # sock.peeraddr(:numeric)  #=> ["AF_INET", 80, "221.186.184.68", "221.186.184.68"]
-    if new_socket.methods.include?(:peeraddr)
-
-      client_host = new_socket.peeraddr(:numeric)[2]
-      client_id = new_socket.peeraddr(:numeric)[1]
-
-      puts "Client joined #{client_host}:#{client_id}"
-
-    end
+    client_host = new_socket.peeraddr[2]
+    client_id = new_socket.peeraddr[1]
 
     @descriptors.push(new_socket)
+    ok = {:status => "OK"}
+    new_socket.puts(ok.to_json)
+    sprintf("Client joined %s:%s\n", client_host, client_id)
 
-    success = {:status => "OK"}
-    new_socket.puts(success.to_json)
-
-  end # accept_new_connection
-end #server
-
+  end
+end
