@@ -47,10 +47,9 @@ class ChaSocker < GServer
     # Add to list of connections, @chatters
     @mutex.synchronize do
       # Use md5 for secure store
-      # user = Digest::MD5.hexdigest(user)
+      user = Digest::MD5.hexdigest(user)
 
       @chatters[user] = io
-      @chatters << io
     end
 
     # Get and broadcast input until connection returns nil
