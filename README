@@ -3,7 +3,7 @@ Simple tcp-socket server, that can broadcast incoming messages to connected sock
 Start server with:
 
 # Default host is 'localhost'
-# Default port is 3001
+# Default port is 46969
 
 $ ruby chat_runner <host> <port>
 
