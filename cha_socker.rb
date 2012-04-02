@@ -80,7 +80,7 @@ class ChaSocker < GServer
 
       # Kind of scary thing to make JSON parse it
       # TODO: Refactor
-      incoming = incoming.strip.gsub(/[\\]/,'').chop.reverse.chop.reverse
+      incoming = incoming.strip.gsub(/[\\]/, '').chop.reverse.chop.reverse
 
       parsed = JSON.parse(incoming)
       message = parsed["message"].strip << "\n"
@@ -101,10 +101,10 @@ class ChaSocker < GServer
 
   def status(kind)
     status = case kind
-               when :ok
-                 { :status => "ok" }
-               else
-                 { :status => "ok" }
+             when :ok
+               { :status => "ok" }
+             else
+               { :status => "ok" }
              end
     JSON.generate(status)
   end
