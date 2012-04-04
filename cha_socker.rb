@@ -19,25 +19,25 @@ class ChaSocker < GServer
   #Send message out to everyone, but sender
   def broadcast(message, sender=nil, recipients=[])
 
-    message = message.strip << "\n"
-
     # Mutex for safety - GServer uses threads
     @mutex.synchronize do
 
-      id, sock = chatter[0], chatter[1]
-
       @chatters.each do |chatter|
+
+        id, sock = chatter[0], chatter[1]
+
         begin
 
           # Do not send to Server
           if sock != sender
 
-            sock.print(message) if recipients.include?(id)
+            sock.print(message) if !recipients.include?(id)
 
           end
 
         rescue
 
+          $stderr.puts("DELETING #{sock.inspect} by #{id}")
           @chatters.delete(id)
 
         end
@@ -73,17 +73,16 @@ class ChaSocker < GServer
 
     end
 
+    # Inspect chatters
+    $stderr.puts("#{Time.now} Chatters #{@chatters.inspect}")
+
     # Get and broadcast input until connection returns nil
     loop do
 
       incoming = io.gets
 
-      # Kind of scary thing to make JSON parse it
-      # TODO: Refactor
-      incoming = incoming.strip.gsub(/[\\]/, '').chop.reverse.chop.reverse
-
       parsed = JSON.parse(incoming)
-      message = parsed["message"].strip << "\n"
+      message = parsed["message"]
       recipients = parsed["recipients"]
 
       if message
