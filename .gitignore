@@ -4,6 +4,7 @@
 .bundle
 .config
 .yardoc
+.idea
  ile.lock
 InstalledFiles
 _yardoc
