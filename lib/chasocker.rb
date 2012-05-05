@@ -46,7 +46,7 @@ module Chasocker
       @mutex.synchronize { @chatters[user] = io }
 
       # Inspect chatters
-      #$stdout.puts("#{Time.now} Chatters #{@chatters.inspect}")
+      $stdout.puts("#{Time.now} Chatters #{@chatters.inspect}")
 
       # Get and broadcast input until connection returns nil
       loop do
@@ -54,11 +54,11 @@ module Chasocker
         incoming = io.gets
         parsed = JSON.parse(incoming)
         message = parsed["message"]
-        #recipients = parsed["recipients"]
+        recipients = parsed["recipients"]
 
         if message
 
-          broadcast(message, io)
+          broadcast(message, io, recipients)
           $stdout.puts "#{parsed.inspect}"
 
         else
@@ -72,7 +72,7 @@ module Chasocker
     end
 
     #Send message out to everyone, but sender
-    def broadcast(message="", sender)
+    def broadcast(message="", sender, recipients)
 
       # Mutex for safety - GServer uses threads
       @mutex.synchronize do
@@ -86,7 +86,7 @@ module Chasocker
             # Do not send to Server
             if sock != sender
 
-              sock.print(message) #if !recipients.include?(id)
+              sock.print(message) if recipients.include?(id)
 
             end
 
