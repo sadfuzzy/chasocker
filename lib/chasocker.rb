@@ -79,7 +79,7 @@ module Chasocker
 
         @chatters.each do |chatter|
 
-          sock = chatter[1]
+          id, sock = chatter[0], chatter[1]
 
           begin
 
@@ -92,7 +92,7 @@ module Chasocker
 
           rescue
 
-            $stdout.puts("DELETING #{sock.inspect} by #{id}")
+            $stdout.puts("DELETING #{sock.inspect}")
             #@chatters.delete(id)
 
           end
