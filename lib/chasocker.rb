@@ -53,7 +53,7 @@ module Chasocker
 
         incoming = io.gets
         parsed = JSON.parse(incoming)
-        message = parsed["message"]
+        message = parsed["message"].to_s.gsub(/=>/, ':')
         recipients = parsed["recipients"]
 
         if message
