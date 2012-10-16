@@ -1,3 +1,5 @@
+[![endorse](http://api.coderwall.com/sadfuzzy/endorsecount.png)](http://coderwall.com/sadfuzzy)
+
 # Chasocker
 
 TODO: Write a gem description
