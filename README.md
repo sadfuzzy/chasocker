@@ -7,17 +7,17 @@ TODO: Write a gem description
 ## Installation
 
 Add this line to your application's Gemfile:
-
-    gem 'chasocker'
-
+```ruby
+gem 'chasocker'
+```
 And then execute:
-
-    $ bundle
-
+```
+$ bundle
+```
 Or install it yourself as:
-
-    $ gem install chasocker
-
+```
+$ gem install chasocker
+```
 ## Usage
 
 TODO: Write usage instructions here
